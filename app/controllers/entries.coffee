@@ -1,5 +1,6 @@
 Spine = require('spine')
 Entry = require('models/entry')
+List  = require('lib/list')
 
 class EntriesPreview extends Spine.Controller
   className: 'preview'
@@ -14,23 +15,21 @@ class EntriesPreview extends Spine.Controller
   change: (@item) =>
     @render()
 
-class EntriesList extends Spine.Controller
+class EntriesList extends Spine.Controller  
   className: 'list'
-    
-  events:
-    'click .item': 'click'
   
   constructor: ->
     super
+    @list = new List(el: @el, selectFirst: true, template: @template)
+    @list.bind 'change', (item) -> Spine.trigger('entry:change', item)
     Entry.bind('refresh change', @render)
+  
+  template:
+    require('views/entries')
     
   render: =>
     entries = Entry.all()
-    @html require('views/entries')(entries)
-    
-  click: (e) ->
-    item = $(e.target).item()
-    Spine.trigger('entry:change', item)
+    @list.render(entries)
     
 class Entries extends Spine.Controller
   className: 'entries'
