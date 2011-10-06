@@ -1,7 +1,7 @@
 <article class="item">
-	<heading>
+	<header>
 		<h1 class="title"><%= @title %></h1>
-	</heading>
+	</header>
 	<footer>
 		<span class="author"><%= @author %></span>
 		<span class="date"><%= @date %></span>
